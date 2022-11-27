@@ -6,6 +6,11 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+@font-face {
+  font-family: "windows95";
+  src: local("w95fa"), url("../fonts/w95fa.woff") format("woff");
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -21,6 +26,6 @@ a {
   }
   body {
     color: white;
-    background: black;
+    background: #198c92;
   }
 }
