@@ -1,18 +1,20 @@
 import { StaticImageData } from "next/image";
 import { FolderContainer, FolderText, StyledImage } from "./styles";
 import { useBoolean, useOnClickOutside } from "usehooks-ts";
-import { useId, useRef } from "react";
+import { useRef } from "react";
 import Draggable from "react-draggable";
-import { useFolders } from "@store/store";
+import { useFolders } from "@store/useFolders";
 
 type FolderP = {
   name: string;
   icon: StaticImageData;
-  onDoubleClick: VoidFunction;
+  id: string;
+  position: { x: number; y: number };
+  setPosition: (position: { x: number; y: number }, id: string) => void;
 };
 
-export const FolderButton = ({ name, icon, onDoubleClick }: FolderP) => {
-  const { setFolder } = useFolders();
+export const File = ({ name, icon, id, position, setPosition }: FolderP) => {
+  const { setFolder, shortcuts, removeFolder } = useFolders();
   const { toggle, value } = useBoolean();
   const ref = useRef(null);
   const handleClickOutside = () => {
@@ -22,9 +24,20 @@ export const FolderButton = ({ name, icon, onDoubleClick }: FolderP) => {
     return;
   };
   useOnClickOutside(ref, handleClickOutside);
-  const id = useId();
+  // if (!position.x) return <div />;
   return (
-    <Draggable>
+    <Draggable
+      onStop={(position) =>
+        setPosition(
+          {
+            x: position.x,
+            y: position.y,
+          },
+          id
+        )
+      }
+      defaultPosition={position}
+    >
       <FolderContainer
         onDoubleClick={() => {
           setFolder({
@@ -32,7 +45,9 @@ export const FolderButton = ({ name, icon, onDoubleClick }: FolderP) => {
             id,
             name,
           });
-          onDoubleClick();
+          if (shortcuts.find((e) => e.id === id)) {
+            removeFolder(id);
+          }
         }}
         onClick={toggle}
         ref={ref}

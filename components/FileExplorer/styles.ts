@@ -3,6 +3,7 @@ import { styled } from "goober";
 export const FileExplorerContainer = styled("div")<{
   fullscreen?: boolean;
 }>`
+  z-index: 100;
   font-family: "windows95";
   width: ${({ fullscreen }) => (fullscreen ? "100vw" : "800px")};
   height: ${({ fullscreen }) => (fullscreen ? "100vh" : "500px")};
@@ -33,11 +34,7 @@ export const Header = styled("div")<{ fullscreen?: boolean }>`
   align-items: center;
   padding: 4px;
   background: rgb(9, 0, 163);
-  background: linear-gradient(
-    90deg,
-    rgba(9, 0, 163, 1) 0%,
-    rgba(0, 0, 255, 1) 100%
-  );
+  background: linear-gradient(90deg, #445271 0%, #6a899c 100%);
   ${({ fullscreen }) =>
     !fullscreen
       ? `

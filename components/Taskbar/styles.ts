@@ -9,7 +9,7 @@ export const TaskbarContainer = styled("div")`
   padding: 0px 5px;
   width: 100%;
   background-color: #c0c0c0;
-  height: 50px;
+  height: 45px;
   border-top: 3px solid white;
   user-select: none;
 `;
@@ -41,6 +41,7 @@ export const SingleFolder = styled("div")<{ clicked?: boolean }>`
   justify-content: flex-start;
   gap: 10px;
   color: black;
+  cursor: pointer;
   font-family: "windows95";
   ${({ clicked }) =>
     clicked
@@ -49,13 +50,13 @@ export const SingleFolder = styled("div")<{ clicked?: boolean }>`
             border-top: 3px solid black;
             border-right: 3px solid white;
             border-bottom: 3px solid white;
+            font-weight: 1000;
           `
       : `
             border-left: 3px solid white;
             border-top: 3px solid white;
             border-right: 3px solid black;
             border-bottom: 3px solid black;
-            font-weight: bold;
           `}
   border-radius: 2px;
 `;

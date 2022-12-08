@@ -10,11 +10,15 @@ import {
   Title,
 } from "./styles";
 import { useBoolean } from "usehooks-ts";
+import { useFolders } from "@store/useFolders";
 
 type FileExplorerP = {
-  active: boolean;
+  active: (id: string) => boolean;
   title: string;
-  close: VoidFunction;
+  close: (id: string) => void;
+  id: string;
+  position: { x: number; y: number };
+  setPosition: (position: { x: number; y: number }, id: string) => void;
 };
 
 export const FileExplorer = ({
@@ -22,13 +26,20 @@ export const FileExplorer = ({
   title,
   children,
   close,
+  id,
+  position,
+  setPosition,
 }: PropsWithChildren<FileExplorerP>) => {
   const { toggle, value: fullscreen } = useBoolean();
+  const { removeFolder } = useFolders();
   return (
     <span>
-      {active && (
+      {active(id) && (
         <Draggable
-          position={fullscreen ? { x: 0, y: 0 } : undefined}
+          position={fullscreen ? { x: 0, y: 0 } : position}
+          onStop={(position) => {
+            setPosition({ x: position.x, y: position.y }, id);
+          }}
           handle=".header"
           disabled={fullscreen === true}
         >
@@ -36,14 +47,15 @@ export const FileExplorer = ({
             <Header fullscreen={fullscreen} className="header">
               <Title>{title}</Title>
               <ButtonContainer>
-                <Button>_</Button>
+                <Button onClick={() => close(id)}>_</Button>
                 <Button onClick={toggle}>|_|</Button>
                 <Button
                   onClick={() => {
                     if (fullscreen) {
                       toggle();
                     }
-                    close();
+                    removeFolder(id);
+                    close(id);
                   }}
                 >
                   X

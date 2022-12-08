@@ -7,10 +7,12 @@ import {
 } from "./styles";
 import dayjs from "dayjs";
 import { useEffect, useState } from "react";
-import { Folders } from "@store/store";
+import { Shortcut } from "@store/types";
+
+type ShortcutP = Shortcut & { onFolderClick: VoidFunction; clicked: boolean };
 
 type TaskbarP = {
-  folders: Folders["folders"];
+  folders: Array<ShortcutP>;
 };
 
 export const Taskbar = ({ folders }: TaskbarP) => {
@@ -28,7 +30,11 @@ export const Taskbar = ({ folders }: TaskbarP) => {
       <FoldersContainer>
         {folders?.map((e) => {
           return (
-            <SingleFolder key={e.id}>
+            <SingleFolder
+              clicked={e.clicked}
+              onClick={e.onFolderClick}
+              key={e.id}
+            >
               <StyledTaskbarIcon src={e.icon} alt="icon" />
               {e.name}
             </SingleFolder>

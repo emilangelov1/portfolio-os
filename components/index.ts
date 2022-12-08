@@ -1,4 +1,3 @@
 export * from "./FileExplorer";
-export * from "./FolderButton";
-export * from "./Projects";
+export * from "./File";
 export * from "./Taskbar";

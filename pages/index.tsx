@@ -1,8 +1,11 @@
-import { Projects } from "@components/Projects";
 import { Taskbar } from "@components/Taskbar";
-import { useFolders } from "@store/store";
+import { useFolders } from "@store/useFolders";
 import { styled } from "goober";
-import folder from "../assets/folder.png";
+import { shortcuts as files } from "@store/files";
+import { File } from "@components/File";
+import { useFolderPosition } from "@store/useFolderPosition";
+import Draggable from "react-draggable";
+import { FileExplorer } from "@components/FileExplorer";
 
 const Container = styled("div")`
   width: 100%;
@@ -10,11 +13,47 @@ const Container = styled("div")`
 `;
 
 export default function Home() {
-  const { folders } = useFolders();
+  const { shortcuts, removeFolder } = useFolders();
+  const { positions, setPosition } = useFolderPosition();
+  console.log(positions);
   return (
     <Container>
-      <Projects />
-      <Taskbar folders={folders} />
+      <>
+        {files.map((e) => {
+          return (
+            <>
+              <File
+                setPosition={(position, id) =>
+                  id === e.id ? setPosition({ id: position }) : {}
+                }
+                position={{ x: 0, y: 0 }}
+                icon={e.icon}
+                id={e.id}
+                name={e.name}
+              />
+              <FileExplorer
+                position={{ x: 0, y: 0 }}
+                setPosition={(position, id) =>
+                  id === e.id ? setPosition({ id: position }) : {}
+                }
+                id={e.id}
+                close={(id) => removeFolder(id)}
+                title={e.name}
+                active={(id) => shortcuts.some((e) => e.id === id)}
+              />
+            </>
+          );
+        })}
+        <Taskbar
+          folders={shortcuts.map((e) => ({
+            icon: e.icon,
+            id: e.id,
+            clicked: true,
+            name: e.name,
+            onFolderClick: () => console.log("folderClick"),
+          }))}
+        />
+      </>
     </Container>
   );
 }
