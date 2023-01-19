@@ -6,7 +6,7 @@ import Draggable from "react-draggable";
 
 type FolderP = {
   name: string;
-  icon: StaticImageData;
+  icon?: StaticImageData;
   id: string;
   position: { x: number; y: number };
   setPosition: (position: { x: number; y: number }) => void;
@@ -45,7 +45,7 @@ export const File = ({
         <StyledImage
           draggable={false}
           active={value}
-          src={icon}
+          src={icon ?? ""}
           alt="folder"
         ></StyledImage>
         <FolderText active={value}>{name}</FolderText>

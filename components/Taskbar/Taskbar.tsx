@@ -35,7 +35,7 @@ export const Taskbar = ({ folders }: TaskbarP) => {
               onClick={e.onFolderClick}
               key={e.id}
             >
-              <StyledTaskbarIcon src={e.icon} alt="icon" />
+              <StyledTaskbarIcon src={e.icon ?? ""} alt="icon" />
               {e.name}
             </SingleFolder>
           );

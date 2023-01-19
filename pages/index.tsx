@@ -30,7 +30,7 @@ export default function Home() {
           return (
             <File
               position={foundPosition}
-              icon={e.icon}
+              icon={e.icon ?? undefined}
               key={e.id}
               id={e.id}
               name={e.name}

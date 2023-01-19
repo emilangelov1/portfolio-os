@@ -10,7 +10,7 @@ type WindowType = "browser" | "folder" | "notepad";
 export type Shortcut = {
   id: string;
   type: WindowType;
-  icon: StaticImageData;
+  icon?: StaticImageData;
   name: string;
   position: Position;
 };
