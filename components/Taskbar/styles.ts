@@ -50,7 +50,7 @@ export const SingleFolder = styled("div")<{ clicked?: boolean }>`
             border-top: 3px solid black;
             border-right: 3px solid white;
             border-bottom: 3px solid white;
-            font-weight: 1000;
+            font-weight: bolder;
           `
       : `
             border-left: 3px solid white;

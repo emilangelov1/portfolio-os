@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import Draggable from "react-draggable";
+import Draggable, { DraggableEvent } from "react-draggable";
 import {
   Button,
   ButtonContainer,
@@ -9,64 +9,48 @@ import {
   Resize,
   Title,
 } from "./styles";
-import { useBoolean } from "usehooks-ts";
-import { useFolders } from "@store/useFolders";
 
 type FileExplorerP = {
-  active: (id: string) => boolean;
   title: string;
-  close: (id: string) => void;
+  onClose: () => void;
   id: string;
   position: { x: number; y: number };
-  setPosition: (position: { x: number; y: number }, id: string) => void;
+  setPosition: (position: { x: number; y: number }) => void;
+  fullscreen: boolean;
+  onFullscreen: () => void;
+  onMinimize: () => void;
 };
 
 export const FileExplorer = ({
-  active,
   title,
   children,
-  close,
+  onClose,
+  onFullscreen,
+  onMinimize,
   id,
   position,
   setPosition,
+  fullscreen,
 }: PropsWithChildren<FileExplorerP>) => {
-  const { toggle, value: fullscreen } = useBoolean();
-  const { removeFolder } = useFolders();
   return (
-    <span>
-      {active(id) && (
-        <Draggable
-          position={fullscreen ? { x: 0, y: 0 } : position}
-          onStop={(position) => {
-            setPosition({ x: position.x, y: position.y }, id);
-          }}
-          handle=".header"
-          disabled={fullscreen === true}
-        >
-          <FileExplorerContainer fullscreen={fullscreen}>
-            <Header fullscreen={fullscreen} className="header">
-              <Title>{title}</Title>
-              <ButtonContainer>
-                <Button onClick={() => close(id)}>_</Button>
-                <Button onClick={toggle}>|_|</Button>
-                <Button
-                  onClick={() => {
-                    if (fullscreen) {
-                      toggle();
-                    }
-                    removeFolder(id);
-                    close(id);
-                  }}
-                >
-                  X
-                </Button>
-              </ButtonContainer>
-            </Header>
-            <Children>{children}</Children>
-            <Resize />
-          </FileExplorerContainer>
-        </Draggable>
-      )}
-    </span>
+    <Draggable
+      position={fullscreen ? { x: 0, y: 0 } : position}
+      onDrag={(e: any) => setPosition({ x: e.movementX, y: e.movementY })}
+      handle=".header"
+      disabled={fullscreen === true}
+    >
+      <FileExplorerContainer fullscreen={fullscreen}>
+        <Header fullscreen={fullscreen} className="header">
+          <Title>{title}</Title>
+          <ButtonContainer>
+            <Button onClick={onMinimize}>_</Button>
+            <Button onClick={onFullscreen}>|_|</Button>
+            <Button onClick={onClose}>X</Button>
+          </ButtonContainer>
+        </Header>
+        <Children>{children}</Children>
+        <Resize />
+      </FileExplorerContainer>
+    </Draggable>
   );
 };
